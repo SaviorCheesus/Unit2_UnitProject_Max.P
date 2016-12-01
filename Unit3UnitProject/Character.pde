@@ -1,10 +1,11 @@
 class Player 
 { 
-  private float _x, _y;
+  public float _x, _y;
   private PImage _img;
   private boolean _isAlive;
   private Body _body;
   
+  public boolean _canJump;
   private boolean _keyLeft;
   private boolean _keyRight;
   private boolean _keyJump;
@@ -23,24 +24,35 @@ class Player
     _moveSpeed = new PVector(40,20);
     _jumpStrength = 999999999;
     CreateBody();
-  }
+   }
   
+    public void display()
+    {
+      Draw();
+      Update();
+   //   Check();
+    }
     
-  public void Update()
-  {
+    
+    public void Update()
+    {
     KeyInputs();
     HandleMovement();
-  }
+    }
   
     public void Draw()
-  {
+    {
     PVector pos = box2d.getBodyPixelCoordPVector(_body);
     
     imageMode(CENTER);
     pushMatrix();
     translate(pos.x, pos.y);
     image(_img, 0, 0);    
-    popMatrix();          
+    popMatrix();    
+    
+    cameraX = pos.x - 720;
+    
+    cameraY = pos.y - height/2;
   }
 
   
@@ -99,12 +111,9 @@ class Player
   
   
   
-  private void HandleMovement()
-  {
-
+  public void HandleMovement()
+  {   
     Vec2 currentVelocity = _body.getLinearVelocity();
-    
-    
     if (_keyRight)
     {
       currentVelocity.x = - _moveSpeed.x;
@@ -119,7 +128,7 @@ class Player
     }
     _body.setLinearVelocity(currentVelocity);
   
-    if (_keyJump && currentVelocity.y < 1 && currentVelocity.y > -1)
+    if (_keyJump && _canJump == true)
     {
        _moveSpeed.y = _jumpStrength;
        _body.applyLinearImpulse( new Vec2(0, _jumpStrength), _body.getWorldCenter(), false);

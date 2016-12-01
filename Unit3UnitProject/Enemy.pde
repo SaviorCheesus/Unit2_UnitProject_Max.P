@@ -6,12 +6,10 @@ class Enemy
   private Body _body;
   
   private PVector _moveSpeed;
-  
-  
   Enemy(float x, float y, PImage img, boolean isAlive)
   {
     
-     _x = x;
+    _x = x;
     _y = y;
     _img = img;
     _isAlive = isAlive;
@@ -20,15 +18,20 @@ class Enemy
     CreateBody();
   }
   
+  public void Display()
+  {
+    Update();
+    Draw();
+    Check();
+  }
     
   public void Update()
   {
     HandleMovement();
   }
   
-    public void Draw()
+  public void Draw()
   {
- 
     PVector pos = box2d.getBodyPixelCoordPVector(_body);
 
     imageMode(CENTER);
@@ -37,9 +40,9 @@ class Enemy
     image(_img, 0, 0);    
     popMatrix();          
   }
-
   
-    private void CreateBody()
+  
+  private void CreateBody()
   {
     int imgH = _img.height;
     int imgW = _img.width;
@@ -65,17 +68,12 @@ class Enemy
     _body = box2d.createBody(bd);
     _body.createFixture(fd);
   }
- 
-  
-  
-  
+   
+   
   private void HandleMovement()
   {
 
-    Vec2 currentVelocity = _body.getLinearVelocity();
-    
-    
-      currentVelocity.x = -999999;
-
+    Vec2 currentVelocity = _body.getLinearVelocity();   
+    currentVelocity.x = -20;
   }
 }
