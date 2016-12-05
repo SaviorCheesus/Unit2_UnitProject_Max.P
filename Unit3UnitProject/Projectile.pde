@@ -13,6 +13,7 @@ class Projectile
     _isAlive = isAlive;
     
     imageMode(CENTER);
+    Body _body;
     movement = new PVector(player._x, player._y);
     CreateBody();
   }
@@ -30,16 +31,21 @@ class Projectile
   
   public void Draw()
   {
-    PVector pos = box2d.getBodyPixelCoordPVector(_body);
+    Vec2 pos = box2d.getBodyPixelCoord(_body); 
+    
+    PVector _pos = box2d.getBodyPixelCoordPVector(_body);
+    
     pushMatrix();
-    translate(pos.x, pos.y);   
-    popMatrix();    
+    translate(pos.x,pos.y);
+    fill(175);
+    popMatrix();  
   }
   
   private void CreateBody()
   {
-    int imgH = sprite.height;
-    int imgW = sprite.width;
+    scale (2,1);
+    int imgH = fireBall.height;
+    int imgW = fireBall.width;
 
 
     PolygonShape sd = new PolygonShape();
@@ -58,17 +64,19 @@ class Projectile
   {
     if (mousePressed == true)
     {
+      shooting = true;
       movement.x=mouseX-(player._x);
       movement.y=mouseY-(player._y);
       movement.normalize();
   
       _x+=15*movement.x;
       _y+=15*movement.y;
-  
-      image (sprite, _x, _y);
+      
+      image (fireBall, _x, _y);
     }
     else
     {
+      shooting = false;
       _x = cameraX + (width/2);
       _y = cameraY + (height/2) - 40;
     }

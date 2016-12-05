@@ -26,7 +26,7 @@ class Player
     CreateBody();
    }
   
-    public void display()
+    public void Display()
     {
       Draw();
       Update();
@@ -110,13 +110,13 @@ class Player
   }
   
   
-  
   public void HandleMovement()
-  {   
+  { 
     Vec2 currentVelocity = _body.getLinearVelocity();
     if (_keyRight)
     {
       currentVelocity.x = - _moveSpeed.x;
+      
     }
     else if (_keyLeft)
     {
@@ -133,5 +133,12 @@ class Player
        _moveSpeed.y = _jumpStrength;
        _body.applyLinearImpulse( new Vec2(0, _jumpStrength), _body.getWorldCenter(), false);
     }
+  }
+  
+
+  
+  private void CleanUpDeadObject()
+  {
+    box2d.destroyBody(_body);
   }
 }

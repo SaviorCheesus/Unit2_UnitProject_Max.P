@@ -1,12 +1,16 @@
 class Enemy
 { 
-  private float _x, _y;
+  public float _x, _y;
   private PImage _img;
   private boolean _isAlive;
   private Body _body;
   
   private PVector _moveSpeed;
-  Enemy(float x, float y, PImage img, boolean isAlive)
+  Vec2 pos = box2d.getBodyPixelCoord(_body);
+  public float enemyX = pos.x;
+  public float enemyY = pos.
+
+  Enemy (float _x, float y, PImage img, boolean isAlive)
   {
     
     _x = x;
@@ -22,7 +26,7 @@ class Enemy
   {
     Update();
     Draw();
-    Check();
+    //Check();
   }
     
   public void Update()
@@ -38,7 +42,7 @@ class Enemy
     pushMatrix();
     translate(pos.x, pos.y);
     image(_img, 0, 0);    
-    popMatrix();          
+    popMatrix();   
   }
   
   
@@ -68,12 +72,39 @@ class Enemy
     _body = box2d.createBody(bd);
     _body.createFixture(fd);
   }
-   
-   
+     
   private void HandleMovement()
   {
 
-    Vec2 currentVelocity = _body.getLinearVelocity();   
+    Vec2 Enemy.currentVelocity = _body.getLinearVelocity();   
     currentVelocity.x = -20;
+  }
+  
+  boolean done() 
+  {
+    Vec2 pos = box2d.getBodyPixelCoord(_body);
+    
+    if (dist (pos.x, pos.y, projectile._x, projectile._y) <= 50
+    && shooting == true)
+    {
+      CleanUpDeadObject();
+      return true;
+    }
+    return false;
+  }
+  
+  boolean attack()
+  {
+    if (dist (pos.x, pos.y, player._x, player._y) <= 50)
+    {
+      player.CleanUpDeadObject();
+      return true;
+    }
+    return false;
+  }
+  
+  private void CleanUpDeadObject()
+  {
+    box2d.destroyBody(_body);
   }
 }
