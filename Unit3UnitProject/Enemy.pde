@@ -1,18 +1,14 @@
 class Enemy
 { 
-  public float _x, _y;
+  private float _x, _y;
   private PImage _img;
   private boolean _isAlive;
   private Body _body;
   
   private PVector _moveSpeed;
-  Vec2 pos = box2d.getBodyPixelCoord(_body);
-  public float enemyX = pos.x;
-  public float enemyY = pos.
 
-  Enemy (float _x, float y, PImage img, boolean isAlive)
+  Enemy (float x, float y, PImage img, boolean isAlive)
   {
-    
     _x = x;
     _y = y;
     _img = img;
@@ -20,13 +16,13 @@ class Enemy
     
     _moveSpeed = new PVector(20,20);
     CreateBody();
+    _body.setUserData(this);
   }
   
   public void Display()
   {
     Update();
     Draw();
-    //Check();
   }
     
   public void Update()
@@ -75,9 +71,16 @@ class Enemy
      
   private void HandleMovement()
   {
-
-    Vec2 Enemy.currentVelocity = _body.getLinearVelocity();   
-    currentVelocity.x = -20;
+    Vec2 pos = box2d.getBodyPixelCoord(_body);  
+    Vec2 currentVelocity = _body.getLinearVelocity();  
+    if (pos.x <= cameraX)
+    {
+    currentVelocity.x = 20;
+    }
+    else if (pos.x > cameraX)
+    {
+    currentVelocity.x = -20; 
+    }
   }
   
   boolean done() 
@@ -88,16 +91,6 @@ class Enemy
     && shooting == true)
     {
       CleanUpDeadObject();
-      return true;
-    }
-    return false;
-  }
-  
-  boolean attack()
-  {
-    if (dist (pos.x, pos.y, player._x, player._y) <= 50)
-    {
-      player.CleanUpDeadObject();
       return true;
     }
     return false;

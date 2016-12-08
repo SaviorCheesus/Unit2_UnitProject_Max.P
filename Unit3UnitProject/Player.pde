@@ -21,16 +21,24 @@ class Player
     _isAlive = isAlive;
     
    
-    _moveSpeed = new PVector(40,20);
+    _moveSpeed = new PVector(60,20);
     _jumpStrength = 999999999;
     CreateBody();
+    _body.setUserData(this);
    }
   
     public void Display()
     {
-      Draw();
-      Update();
-   //   Check();
+      if (_isAlive)
+      {
+        Draw();
+        Update();
+      }
+      else
+      {
+        exit();
+      }
+      
     }
     
     
@@ -51,7 +59,6 @@ class Player
     popMatrix();    
     
     cameraX = pos.x - 720;
-    
     cameraY = pos.y - height/2;
   }
 
@@ -133,12 +140,5 @@ class Player
        _moveSpeed.y = _jumpStrength;
        _body.applyLinearImpulse( new Vec2(0, _jumpStrength), _body.getWorldCenter(), false);
     }
-  }
-  
-
-  
-  private void CleanUpDeadObject()
-  {
-    box2d.destroyBody(_body);
   }
 }

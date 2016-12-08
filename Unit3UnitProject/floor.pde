@@ -13,6 +13,7 @@ class Floor
     _isActive = isActive;
     
     CreateBody();
+    _body.setUserData(this);
   }
   
   private void CreateBody()
